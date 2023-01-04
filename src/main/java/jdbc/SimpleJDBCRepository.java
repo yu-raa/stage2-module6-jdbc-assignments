@@ -27,7 +27,7 @@ public class SimpleJDBCRepository {
     private static final String findUserByNameSQL = "select * from myusers where firstname=";
     private static final String findAllUserSQL = "select * from myusers";
 
-    public Long createUser(User user) throws SQLException {
+    public Long createUser(User user) {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -36,11 +36,16 @@ public class SimpleJDBCRepository {
             return null;
         }
         finally {
-            connection.close();
+            try {
+                connection.close();
+            }
+            catch (SQLException e) {
+
+            }
         }
     }
 
-    public User findUserById(Long userId) throws SQLException {
+    public User findUserById(Long userId) {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -56,11 +61,16 @@ public class SimpleJDBCRepository {
             return null;
         }
         finally {
-            connection.close();
+            try {
+                connection.close();
+            }
+            catch (SQLException e) {
+
+            }
         }
     }
 
-    public User findUserByName(String userName) throws SQLException {
+    public User findUserByName(String userName) {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -76,11 +86,16 @@ public class SimpleJDBCRepository {
             return null;
         }
         finally {
-            connection.close();
+            try {
+                connection.close();
+            }
+            catch (SQLException e) {
+
+            }
         }
     }
 
-    public List<User> findAllUser() throws SQLException {
+    public List<User> findAllUser() {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -100,11 +115,16 @@ public class SimpleJDBCRepository {
             return null;
         }
         finally {
-            connection.close();
+            try {
+                connection.close();
+            }
+            catch (SQLException e) {
+
+            }
         }
     }
 
-    public User updateUser(User user) throws SQLException {
+    public User updateUser(User user) {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -115,11 +135,16 @@ public class SimpleJDBCRepository {
             return null;
         }
         finally {
-            connection.close();
+            try {
+                connection.close();
+            }
+            catch (SQLException e) {
+
+            }
         }
     }
 
-    public void deleteUser(Long userId) throws SQLException {
+    public void deleteUser(Long userId) {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -128,7 +153,12 @@ public class SimpleJDBCRepository {
         catch (SQLException e) {
         }
         finally {
-            connection.close();
+            try {
+                connection.close();
+            }
+            catch (SQLException e) {
+
+            }
         }
     }
 }
