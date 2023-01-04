@@ -34,7 +34,6 @@ public class CustomDataSource implements DataSource {
                 InputStream inputStream = new FileInputStream("src/main/resources/app.properties");
                 prop.load(inputStream);
             } catch (IOException e) {
-                return null;
             }
             instance = new CustomDataSource
                     (prop.getProperty("postgres.driver", ""),
