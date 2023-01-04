@@ -27,7 +27,7 @@ public class SimpleJDBCRepository {
     private static final String findUserByNameSQL = "select * from myusers where firstname=";
     private static final String findAllUserSQL = "select * from myusers";
 
-    public Long createUser(User user) {
+    public Long createUser(User user) throws SQLException {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -35,9 +35,12 @@ public class SimpleJDBCRepository {
         } catch (SQLException e) {
             return null;
         }
+        finally {
+            connection.close();
+        }
     }
 
-    public User findUserById(Long userId) {
+    public User findUserById(Long userId) throws SQLException {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -52,9 +55,12 @@ public class SimpleJDBCRepository {
         catch (SQLException e) {
             return null;
         }
+        finally {
+            connection.close();
+        }
     }
 
-    public User findUserByName(String userName) {
+    public User findUserByName(String userName) throws SQLException {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -69,9 +75,12 @@ public class SimpleJDBCRepository {
         catch (SQLException e) {
             return null;
         }
+        finally {
+            connection.close();
+        }
     }
 
-    public List<User> findAllUser() {
+    public List<User> findAllUser() throws SQLException {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -90,9 +99,12 @@ public class SimpleJDBCRepository {
         catch (SQLException e) {
             return null;
         }
+        finally {
+            connection.close();
+        }
     }
 
-    public User updateUser(User user) {
+    public User updateUser(User user) throws SQLException {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
@@ -102,15 +114,21 @@ public class SimpleJDBCRepository {
         catch (SQLException e) {
             return null;
         }
+        finally {
+            connection.close();
+        }
     }
 
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long userId) throws SQLException {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
             st.executeQuery(deleteUser + userId);
         }
         catch (SQLException e) {
+        }
+        finally {
+            connection.close();
         }
     }
 }
