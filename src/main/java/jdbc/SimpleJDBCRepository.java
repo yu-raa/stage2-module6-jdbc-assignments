@@ -20,18 +20,19 @@ public class SimpleJDBCRepository {
     private PreparedStatement ps = null;
     private Statement st = null;
 
-    private static final String createUserSQL = "insert into myusers (firstname, lastname, age) values (";
+    private static final String createUserSQL = "insert into myusers values (";
     private static final String updateUserSQL = "update table myusers set ";
     private static final String deleteUser = "delete from myusers where id=";
     private static final String findUserByIdSQL = "select * from myusers where id=";
-    private static final String findUserByNameSQL = "select * from myusers where firstname=";
+    private static final String findUserByNameSQL = "select * from myusers where firstname='";
     private static final String findAllUserSQL = "select * from myusers";
 
     public Long createUser(User user) {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
-            return st.executeQuery(createUserSQL + user.getFirstName() + ", " + user.getLastName() + ", " + user.getAge() + ")").getLong(0);
+            st.execute(createUserSQL + user.getId() + ", '" + user.getFirstName() + "', '" + user.getLastName() + "', " + user.getAge() + ")");
+            return user.getId();
         } catch (SQLException e) {
             return null;
         }
@@ -52,9 +53,9 @@ public class SimpleJDBCRepository {
             ResultSet result = st.executeQuery(findUserByIdSQL + userId);
             User user = new User();
             user.setId(userId);
-            user.setFirstName(result.getString(1));
-            user.setLastName(result.getString(2));
-            user.setAge(result.getInt(3));
+            user.setFirstName(result.getString(2));
+            user.setLastName(result.getString(3));
+            user.setAge(result.getInt(4));
             return user;
         }
         catch (SQLException e) {
@@ -74,12 +75,12 @@ public class SimpleJDBCRepository {
         connection = new CustomConnector().getConnection(CustomDataSource.getInstance().getUrl(), CustomDataSource.getInstance().getName(), CustomDataSource.getInstance().getPassword());
         try {
             st = connection.createStatement();
-            ResultSet result = st.executeQuery(findUserByNameSQL + userName);
+            ResultSet result = st.executeQuery(findUserByNameSQL + userName + "'");
             User user = new User();
-            user.setId(result.getLong(0));
+            user.setId(result.getLong(1));
             user.setFirstName(userName);
-            user.setLastName(result.getString(2));
-            user.setAge(result.getInt(3));
+            user.setLastName(result.getString(3));
+            user.setAge(result.getInt(4));
             return user;
         }
         catch (SQLException e) {
@@ -103,10 +104,10 @@ public class SimpleJDBCRepository {
             List<User> users = new ArrayList<>();
             while (result.next()) {
                 User user = new User();
-                user.setId(result.getLong(0));
-                user.setFirstName(result.getString(1));
-                user.setLastName(result.getString(2));
-                user.setAge(result.getInt(3));
+                user.setId(result.getLong(1));
+                user.setFirstName(result.getString(2));
+                user.setLastName(result.getString(3));
+                user.setAge(result.getInt(4));
                 users.add(user);
             }
             return users;
